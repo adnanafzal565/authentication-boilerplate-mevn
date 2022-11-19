@@ -6,10 +6,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import RegisterComponent from "./components/RegisterComponent.vue"
 import LoginComponent from "./components/LoginComponent.vue"
+import ForgotPasswordComponent from "./components/ForgotPasswordComponent.vue"
+import ResetPasswordComponent from "./components/ResetPasswordComponent.vue"
+import VerifyComponent from "./components/VerifyComponent.vue"
 
 // Define some routes
 // Each route should map to a component.
 const routes = [
+    { path: "/verify/:email", component: VerifyComponent },
+    { path: "/resetPassword/:email", component: ResetPasswordComponent },
+    { path: "/forgotPassword", component: ForgotPasswordComponent },
     { path: "/login", component: LoginComponent },
     { path: "/register", component: RegisterComponent }
 ]

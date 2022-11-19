@@ -21,8 +21,12 @@
  
                     <br />
  
-                    <input type="submit" value="Login" name="submit" class="btn btn-primary" v-bind:value="isLoading ? 'Loading...' : 'Register'" v-bind:disabled="isLoading" />
+                    <input type="submit" value="Login" name="submit" class="btn btn-primary" v-bind:value="isLoading ? 'Loading...' : 'Login'" v-bind:disabled="isLoading" />
                 </form>
+
+                <br />
+
+                <router-link to="/forgotPassword" class="forgot-link">Forgot your password ?</router-link>
             </div>
         </div>
     </div>
@@ -45,6 +49,8 @@
      
         methods: {
             doLogin: async function () {
+                const self = this
+
                 const form = event.target
                 const formData = new FormData(form)
  
@@ -66,10 +72,14 @@
 
                     this.$headers.Authorization = "Bearer " + accessToken
                     store.commit("setUser", response.data.user)
-                    form.reset()
 
                     // to go to home page without refreshing
                     this.$router.push("/")
+                } else if (response.data.status == "verificationRequired") {
+                    swal.fire("Error", response.data.message, "error")
+                        .then(function () {
+                            self.$router.push("/verify/" + form.email.value)
+                        })
                 } else {
                     swal.fire("Error", response.data.message, "error")
                 }
