@@ -314,8 +314,11 @@ http.listen(port, function () {
          
                 // generate JWT of user
                 const accessToken = jwt.sign({
-                    userId: user._id.toString()
-                }, jwtSecret)
+                    userId: user._id.toString(),
+                    time: new Date().getTime()
+                }, jwtSecret, {
+                    expiresIn: (60 * 60 * 24 * 30) // 30 days
+                })
      
                 // update JWT of user in database
                 await db.collection("users").findOneAndUpdate({
