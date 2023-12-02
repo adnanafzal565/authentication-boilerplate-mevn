@@ -57,7 +57,7 @@
                 this.isLoading = true
      
                 const response = await axios.post(
-                    this.$apiURL + "/registration",
+                    this.$apiURL + "/register",
                     formData
                 )
                  

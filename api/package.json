@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "fs": "0.0.1-security",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
