@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Boilerplate</title>
+
+        <link rel="stylesheet" href="/public/css/bootstrap.css" />
+        <link rel="stylesheet" href="/public/css/all.css" />
+
+		<script src="/public/js/jquery.js"></script>
+		<script src="/public/js/bootstrap.js"></script>
+		<script src="/public/js/axios.min.js"></script>
+		<script src="/public/js/sweetalert2@11.js"></script>
+		<script src="/public/js/all.js"></script>
+		<script src="/public/js/vue.global.js"></script>
+    	<!-- <script src="/public/js/vue.global.prod.js"></script> -->
+    </head>
+
+    <body>
+
+        <input type="hidden" id="mainURL" value="<%= mainURL %>" />
+        <script>
+          window.user = null
+          const mainURL = document.getElementById("mainURL").value
+        </script>
+
+        <nav class="navbar navbar-expand-lg bg-light" id="headerApp">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="<%= mainURL %>">Navbar</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a v-bind:class="'nav-link' + (path == '/' ? ' active' : '')" aria-current="page" href="/">Home</a>
+                  </li>
+        
+                  <li class="nav-item" v-if="user == null">
+                    <a v-bind:class="'nav-link' + (path == '/login' ? ' active' : '')" href="/login">Login</a>
+                  </li>
+        
+                  <li class="nav-item" v-if="user == null">
+                    <a v-bind:class="'nav-link' + (path == '/register' ? ' active' : '')" href="/register">Register</a>
+                  </li>
+                  
+                  <li class="nav-item dropdown" v-if="user != null">
+                    <a class="nav-link dropdown-toggle" v-text="user.name" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                      <li><a class="dropdown-item" v-on:click="doLogout" href="javascript:void(0);">Logout</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+        <script>
+            function initHeaderApp() {
+                Vue.createApp({
+
+                    data() {
+                      return {
+                        user: window.user,
+                        path: window.location.href
+                      }
+                    },
+
+                    methods: {
+
+                      async doLogout () {
+                            const response = await axios.post(
+                                mainURL + "/logout",
+                                null,
+                                {
+                                  headers: {
+                                    Authorization: "Bearer: " + localStorage.getItem("accessToken")
+                                  }
+                                }
+                            )
+
+                            if (response.data.status == "success") {
+                                // remove access token from local storage
+                                localStorage.removeItem("accessToken")
+                                window.location.href = "/login"
+                            } else {
+                                swal.fire("Error", response.data.message, "error")
+                            }
+                        }
+                    },
+                }).mount("#headerApp")
+            }
+        </script>

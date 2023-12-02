@@ -1,0 +1,32 @@
+    <script>
+        async function getUser() {
+            const response = await axios.post(
+                mainURL + "/getUser",
+                null,
+                {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("accessToken")
+                    }
+                }
+            )
+
+            if (response.data.status == "success") {
+                window.user = response.data.user
+
+                if (typeof initApp !== "undefined") {
+                    initApp()
+                }
+            } else {
+                // swal.fire("Login", response.data.message, "error")
+            }
+
+            if (typeof initHeaderApp !== "undefined") {
+                initHeaderApp()
+            }
+        }
+
+        getUser()
+    </script>
+
+</body>
+</html>
