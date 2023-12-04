@@ -88,7 +88,7 @@ http.listen(port, function () {
         global.db = client.db("boilerplate_auth")
         console.log("Database connected")
 
-        app.post("/changePassword", auth, async function (request, result) {
+        app.post("/change-password", auth, async function (request, result) {
             const user = request.user
             const password = request.fields.password
             const newPassword = request.fields.newPassword
@@ -141,7 +141,7 @@ http.listen(port, function () {
             })
         })
 
-        app.post("/saveProfile", auth, async function (request, result) {
+        app.post("/save-profile", auth, async function (request, result) {
             const user = request.user
             const name = request.fields.name || ""
 
@@ -211,7 +211,7 @@ http.listen(port, function () {
             })
         })
 
-        app.post("/verifyAccount", async function (request, result) {
+        app.post("/verify-account", async function (request, result) {
             const email = request.fields.email
             const code = request.fields.code
 
@@ -260,7 +260,7 @@ http.listen(port, function () {
             })
         })
 
-        app.post("/resetPassword", async function (request, result) {
+        app.post("/reset-password", async function (request, result) {
             const email = request.fields.email
             const code = request.fields.code
             const password = request.fields.password
@@ -313,7 +313,7 @@ http.listen(port, function () {
             })
         })
 
-        app.post("/sendPasswordRecoveryEmail", async function (request, result) {
+        app.post("/send-password-recovery-email", async function (request, result) {
             const email = request.fields.email
 
             if (!email) {
@@ -389,7 +389,7 @@ http.listen(port, function () {
             })
         })
 
-        app.post("/getUser", auth, async function (request, result) {
+        app.post("/me", auth, async function (request, result) {
             const user = request.user
          
             result.json({

@@ -46,7 +46,7 @@
                 this.isLoading = true
  
                 const response = await axios.post(
-                    this.$apiURL + "/sendPasswordRecoveryEmail",
+                    this.$apiURL + "/send-password-recovery-email",
                     formData
                 )
 
@@ -55,7 +55,7 @@
                 if (response.data.status == "success") {
                     swal.fire("Success", response.data.message, "success")
                         .then(function () {
-                            self.$router.push("/resetPassword/" + form.email.value)
+                            self.$router.push("/reset-password/" + form.email.value)
                         })
                 } else {
                     swal.fire("Error", response.data.message, "error")

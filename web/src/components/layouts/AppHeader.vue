@@ -75,7 +75,7 @@
         // check if user is logged in
         if (localStorage.getItem(this.$accessToken)) {
           const response = await axios.post(
-            this.$apiURL + "/getUser",
+            this.$apiURL + "/me",
             null,
             {
               headers: this.$headers

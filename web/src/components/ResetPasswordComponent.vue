@@ -55,7 +55,7 @@
                 this.isLoading = true
  
                 const response = await axios.post(
-                    this.$apiURL + "/resetPassword",
+                    this.$apiURL + "/reset-password",
                     formData
                 )
 

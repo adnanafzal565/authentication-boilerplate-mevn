@@ -48,7 +48,7 @@
                 this.isLoading = true
  
                 const response = await axios.post(
-                    this.$apiURL + "/verifyAccount",
+                    this.$apiURL + "/verify-account",
                     formData
                 )
 
