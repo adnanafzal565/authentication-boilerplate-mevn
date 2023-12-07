@@ -60,8 +60,8 @@ global.connectionString = "mongodb://localhost:27017"
 const auth = require("./modules/auth")
 
 const nodemailer = require("nodemailer")
-const nodemailerFrom = "support@adnan-tech.com"
-const transport = nodemailer.createTransport({
+global.nodemailerFrom = "support@adnan-tech.com"
+global.transport = nodemailer.createTransport({
     host: "",
     port: 465,
     secure: true,
@@ -178,11 +178,21 @@ http.listen(port, function () {
             // }
 
             if (profileImage?.size > 0) {
+
+                const tempType = profileImage.type.toLowerCase()
+                if (!tempType.includes("jpeg") && !tempType.includes("jpg") && !tempType.includes("png")) {
+                    result.json({
+                        status: "error",
+                        message: "Only JPEG, JPG or PNG is allowed."
+                    })
+                    return
+                }
+
                 if (await fs.existsSync(profileImageObj.path))
                     await fs.unlinkSync(profileImageObj.path)
 
                 const fileData = await fs.readFileSync(profileImage.path)
-                const fileLocation = "uploads/" + "profile-" + (new Date().getTime()) + "-" + profileImage.name
+                const fileLocation = "uploads/profiles/" + (new Date().getTime()) + "-" + profileImage.name
                 await fs.writeFileSync(fileLocation, fileData)
                 await fs.unlinkSync(profileImage.path)
 
@@ -249,9 +259,9 @@ http.listen(port, function () {
                     isVerified: true
                 },
 
-                $unset: {
-                    verificationToken: ""
-                }
+                // $unset: {
+                //     verificationToken: ""
+                // }
             })
 
             result.json({
@@ -490,7 +500,7 @@ http.listen(port, function () {
             const name = request.fields.name
             const email = request.fields.email
             const password = request.fields.password
-            const createdAt = new Date().getTime()
+            const createdAt = new Date().toUTCString()
      
             if (!name || !email || !password) {
                 result.json({
@@ -550,6 +560,18 @@ http.listen(port, function () {
             result.json({
                 status: "success",
                 message: "Please enter the verification code sent on your email address."
+            })
+        })
+
+        app.get("/change-password", function (request, result) {
+            result.render("change-password", {
+                mainURL: mainURL
+            })
+        })
+
+        app.get("/profile", function (request, result) {
+            result.render("profile", {
+                mainURL: mainURL
             })
         })
 

@@ -22,11 +22,7 @@ module.exports = async function (request, result, next) {
             return
         }
  
-        request.user = {
-            _id: user._id,
-            name: user.name,
-            email: user.email
-        }
+        request.user = user
         next()
     } catch (exp) {
         result.json({
